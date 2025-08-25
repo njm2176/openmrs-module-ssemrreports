@@ -28,7 +28,16 @@ public class DateVLSampleReceivedDataEvaluator implements PersonDataEvaluator {
 	        throws EvaluationException {
 		EvaluatedPersonData c = new EvaluatedPersonData(definition, context);
 		
-		String qry = "SELECT client_id, DATE_FORMAT(max(date_vl_results_received), '%d-%m-%Y') as received_date FROM ssemr_etl.ssemr_flat_encounter_hiv_care_follow_up where DATE(encounter_datetime) <= :endDate group by client_id";
+		String qry = "SELECT " + "    client_id, "
+		        + "    DATE_FORMAT(MAX(vl_sample_received_date), '%d-%m-%Y') AS received_date " + "FROM ( " + "    SELECT "
+		        + "        client_id, " + "        date_vl_results_received AS vl_sample_received_date " + "    FROM "
+		        + "        ssemr_etl.ssemr_flat_encounter_hiv_care_follow_up " + "    WHERE "
+		        + "        DATE(encounter_datetime) <= :endDate AND date_vl_results_received IS NOT NULL "
+		        + "    UNION ALL " + "    SELECT " + "        client_id, "
+		        + "        repeat_vl_result_date AS vl_sample_received_date " + "    FROM "
+		        + "        ssemr_etl.ssemr_flat_encounter_high_viral_load " + "    WHERE "
+		        + "        DATE(encounter_datetime) <= :endDate AND repeat_vl_result_date IS NOT NULL "
+		        + ") AS all_received_dates " + "GROUP BY " + "    client_id";
 		
 		SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
 		queryBuilder.append(qry);

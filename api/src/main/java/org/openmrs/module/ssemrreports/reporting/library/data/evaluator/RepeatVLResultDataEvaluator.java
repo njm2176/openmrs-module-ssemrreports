@@ -36,8 +36,16 @@ public class RepeatVLResultDataEvaluator implements PersonDataEvaluator {
 	        throws EvaluationException {
 		EvaluatedPersonData c = new EvaluatedPersonData(definition, context);
 		
-		String qry = "SELECT client_id, CONCAT(MID(MAX(CONCAT(encounter_datetime, repeat_vl_result)), 20)) as vl "
-		        + "FROM ssemr_etl.ssemr_flat_encounter_high_viral_load where DATE(encounter_datetime) <= :endDate group by client_id;";
+		String qry = "WITH LatestHVL AS ( "
+		        + "    SELECT *, ROW_NUMBER() OVER(PARTITION BY client_id ORDER BY encounter_datetime DESC) as rn "
+		        + "    FROM ssemr_etl.ssemr_flat_encounter_high_viral_load " + "    WHERE encounter_datetime <= :endDate "
+		        + ") " + "SELECT " + "    hvl.client_id, " + "    CASE "
+		        + "        WHEN hvl.date_of_collection_of_repeat_vl IS NOT NULL AND hvl.repeat_vl_result_date IS NULL "
+		        + "        THEN 'Pending Result' " + "        ELSE " + "            CASE "
+		        + "                WHEN hvl.repeat_vl_results = 'Viral Load Value' THEN CAST(hvl.repeat_vl_value AS CHAR) "
+		        + "                WHEN hvl.repeat_vl_results = 'Below Detectable (BDL)' THEN 'BDL' "
+		        + "                ELSE hvl.repeat_vl_results " + "            END " + "    END AS final_status "
+		        + "FROM LatestHVL hvl " + "WHERE hvl.rn = 1";
 		
 		SqlQueryBuilder queryBuilder = new SqlQueryBuilder();
 		queryBuilder.append(qry);
