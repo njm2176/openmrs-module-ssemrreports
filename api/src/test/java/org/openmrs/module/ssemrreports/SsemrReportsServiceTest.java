@@ -7,16 +7,16 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs.module.ssemrreports.api;
+package org.openmrs.module.ssemrreports;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
-import org.openmrs.module.ssemrreports.Item;
 import org.openmrs.module.ssemrreports.api.dao.SsemrReportsDao;
 import org.openmrs.module.ssemrreports.api.impl.SsemrReportsServiceImpl;
 import static org.mockito.Mockito.*;
@@ -44,6 +44,7 @@ public class SsemrReportsServiceTest {
 	}
 	
 	@Test
+	@Ignore("Unignore if you want to make the Item class persistable, see also Item and liquibase.xml")
 	public void saveItem_shouldSetOwnerIfNotSet() {
 		//Given
 		Item item = new Item();
