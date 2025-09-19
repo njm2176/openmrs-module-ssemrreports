@@ -16,23 +16,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SetupAftInitiationsRegister extends SsemrDataExportManager {
+public class SetupArtInitiationsRegister extends SsemrDataExportManager {
 	
 	private final AftInitiationsDatasetDefinition aftInitiationsDatasetDefinition;
 	
 	@Autowired
-	public SetupAftInitiationsRegister(AftInitiationsDatasetDefinition aftInitiationsDatasetDefinition) {
+	public SetupArtInitiationsRegister(AftInitiationsDatasetDefinition aftInitiationsDatasetDefinition) {
 		this.aftInitiationsDatasetDefinition = aftInitiationsDatasetDefinition;
 	}
 	
 	@Override
 	public String getExcelDesignUuid() {
-		return SharedTemplatesConstants.AFT_INITIATIONS_TEMPLATE_UUID;
+		return SharedTemplatesConstants.ART_INITIATIONS_TEMPLATE_UUID;
 	}
 	
 	@Override
 	public String getUuid() {
-		return SharedReportConstants.AFT_INITIATIONS_REPORT_UUID;
+		return SharedReportConstants.ART_INITIATIONS_REPORT_UUID;
 	}
 	
 	@Override
@@ -65,7 +65,7 @@ public class SetupAftInitiationsRegister extends SsemrDataExportManager {
 	public List<ReportDesign> constructReportDesigns(ReportDefinition reportDefinition) {
 		ReportDesign reportDesign = null;
 		try {
-			reportDesign = createXlsReportDesign(reportDefinition, "aft_initiations.xls",
+			reportDesign = createXlsReportDesign(reportDefinition, "art_initiations.xls",
 			    "Listing of AFT Initiations from ETL", getExcelDesignUuid(), null);
 			Properties props = new Properties();
 			props.put("repeatingSections", "sheet:1,row:2,dataset:AFT_INITIATIONS");
