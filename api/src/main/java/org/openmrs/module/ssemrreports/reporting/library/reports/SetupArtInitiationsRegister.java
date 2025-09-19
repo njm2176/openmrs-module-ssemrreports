@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Properties;
 
 import org.openmrs.module.reporting.ReportingException;
+import org.openmrs.module.reporting.evaluation.parameter.Mapped;
 import org.openmrs.module.reporting.report.ReportDesign;
 import org.openmrs.module.reporting.report.definition.ReportDefinition;
 import org.openmrs.module.ssemrreports.manager.SsemrDataExportManager;
-import org.openmrs.module.ssemrreports.reporting.library.datasets.AftInitiationsDatasetDefinition;
+import org.openmrs.module.ssemrreports.reporting.library.datasets.ArtInitiationsDatasetDefinition;
 import org.openmrs.module.ssemrreports.reporting.utils.constants.reports.shared.SharedReportConstants;
 import org.openmrs.module.ssemrreports.reporting.utils.constants.templates.shared.SharedTemplatesConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class SetupArtInitiationsRegister extends SsemrDataExportManager {
 	
-	private final AftInitiationsDatasetDefinition aftInitiationsDatasetDefinition;
+	private final ArtInitiationsDatasetDefinition artInitiationsDatasetDefinition;
 	
 	@Autowired
-	public SetupArtInitiationsRegister(AftInitiationsDatasetDefinition aftInitiationsDatasetDefinition) {
-		this.aftInitiationsDatasetDefinition = aftInitiationsDatasetDefinition;
+	public SetupArtInitiationsRegister(ArtInitiationsDatasetDefinition artInitiationsDatasetDefinition) {
+		this.artInitiationsDatasetDefinition = artInitiationsDatasetDefinition;
 	}
 	
 	@Override
@@ -37,7 +38,7 @@ public class SetupArtInitiationsRegister extends SsemrDataExportManager {
 	
 	@Override
 	public String getName() {
-		return "AFT Initiations Register";
+		return "ART Initiations Register";
 	}
 	
 	@Override
@@ -51,8 +52,10 @@ public class SetupArtInitiationsRegister extends SsemrDataExportManager {
 		rd.setUuid(getUuid());
 		rd.setName(getName());
 		rd.setDescription(getDescription());
-		rd.addDataSetDefinition("AFT_INITIATIONS",
-		    aftInitiationsDatasetDefinition.constructAftInitiationsDatasetDefinition(), null);
+		// rd.addParameter(new Parameter("endDate", "End Date", Date.class));
+		rd.addDataSetDefinition("ART_INITIATIONS",
+		    Mapped.mapStraightThrough(artInitiationsDatasetDefinition.constructArtInitiationsDatasetDefinition()));
+		
 		return rd;
 	}
 	
@@ -68,8 +71,10 @@ public class SetupArtInitiationsRegister extends SsemrDataExportManager {
 			reportDesign = createXlsReportDesign(reportDefinition, "art_initiations.xls",
 			    "Listing of AFT Initiations from ETL", getExcelDesignUuid(), null);
 			Properties props = new Properties();
-			props.put("repeatingSections", "sheet:1,row:2,dataset:AFT_INITIATIONS");
+			props.put("repeatingSections", "sheet:1,row:3,dataset:ART_INITIATIONS");
+			props.put("sortWeight", "5000");
 			reportDesign.setProperties(props);
+			
 		}
 		catch (IOException e) {
 			throw new ReportingException(e.toString());
