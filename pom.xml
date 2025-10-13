@@ -272,6 +272,11 @@
 
 
 	<repositories>
+        <repository>
+            <id>repsy</id>
+            <name>My Private Maven Repository on Repsy</name>
+            <url>https://repo.repsy.io/mvn/intellisoftdev/ssemr</url>
+        </repository>
 		<repository>
 			<id>openmrs-repo</id>
 			<name>OpenMRS Nexus Repository</name>
@@ -322,4 +327,15 @@
 		<metadatamappingVersion>1.6.0</metadatamappingVersion>
 		<mambaETLCoreVersion>2.0.1-SNAPSHOT</mambaETLCoreVersion>
 	</properties>
+
+    <distributionManagement>
+        <repository>
+            <id>repsy</id>
+            <url>https://repo.repsy.io/mvn/intellisoftdev/ssemr</url>
+        </repository>
+        <snapshotRepository>
+            <id>repsy</id>
+            <url>https://repo.repsy.io/mvn/intellisoftdev/ssemr</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
