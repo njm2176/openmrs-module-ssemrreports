@@ -275,7 +275,7 @@
         <repository>
             <id>repsy</id>
             <name>My Private Maven Repository on Repsy</name>
-            <url>https://repo.repsy.io/mvn/intellisoftdev/ssemr</url>
+            <url>https://repo.repsy.io/mvn/njm2176/maven</url>
         </repository>
 		<repository>
 			<id>openmrs-repo</id>
@@ -331,11 +331,11 @@
     <distributionManagement>
         <repository>
             <id>repsy</id>
-            <url>https://repo.repsy.io/mvn/intellisoftdev/ssemr</url>
+            <url>https://repo.repsy.io/mvn/njm2176/maven</url>
         </repository>
         <snapshotRepository>
             <id>repsy</id>
-            <url>https://repo.repsy.io/mvn/intellisoftdev/ssemr</url>
+            <url>https://repo.repsy.io/mvn/njm2176/maven</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
